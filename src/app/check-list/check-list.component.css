@@ -1,0 +1,31 @@
+th {
+    padding:5px 10px;
+    border: 1px solid black;
+    min-width: 200px;
+    height:50px;
+    background: cadetblue;
+    color: white;
+}
+td {
+    padding:5px 10px;
+    border: 1px solid black;
+    min-width: 200px;
+    height:50px;
+}
+.commentsStyling {
+    height: 100%;
+    overflow: hidden;
+    border: 0px;
+}
+.errorMessage {
+    color: red;
+}
+.torc {
+    min-width: 50px;
+}
+.deleteButton {
+    float: right;
+}
+button {
+    margin-right: 10px;
+}

@@ -1,0 +1,147 @@
+<button *ngIf="!selectedOperation" (click)="updateOperation('add')"> ADD </button>
+<button *ngIf="!selectedOperation" (click)="updateOperation('edit')"> EDIT </button>
+<button *ngIf="selectedOperation" (click)="cancelOperation('edit')">Cancel</button>
+<select *ngIf="selectedOperation == 'edit'" class="form-control col-xs-3 col-sm-3" id="selectedId"
+                  required
+                  [(ngModel)]="selectedId" name="selectedId"
+                  (change)="getCheckListDetails()"
+                  >
+            <option *ngFor="let checkListId of checkListIds" [value]="checkListId">{{checkListId}}</option>
+          </select>
+          <div class="form-group row" *ngIf="selectedOperation == 'add'">
+            <label class="col-sm-3">Study No</label>
+            <input type="text" class="form-control col-sm-3" id="studyNo"
+                   
+                   [(ngModel)] = "studyNo"
+                   
+                   name="studyNo"
+                  >
+                  <label class="col-sm-3">TMF support</label>
+            <input type="text" class="form-control col-sm-3" id="tmfSupport"
+                  
+                  [(ngModel)] = "tmfSupport"
+                  
+                  name="tmfSupport"
+                 >
+          
+          </div>
+
+<table *ngIf="showTable">
+    <thead>
+        <tr>
+            <th>STUDY Number</th>
+            <th></th>
+            <th colspan="3">{{selectedOperation == 'edit' ? studyNo : ''}}</th>
+            <th>
+<!--Last Updated:--> 
+</th>
+        </tr>
+        <tr>
+            <th>TMF Support</th>
+            <th></th>
+            <th colspan="3">{{selectedOperation == 'edit' ? tmfSupport : ''}}</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>WHEN</th>
+            <th></th>
+            <th>WHAT</th>
+            <th>Completed</th>
+            <th class="torc">Technical/
+                Content
+                </th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container  *ngFor="let item of fields; let i = index">
+            <tr>
+                <td [attr.rowspan]="checkListItems[item]['noOfRows']">{{item}}</td>
+                <td>
+                    <ng-container *ngIf="checkListItems[item]['dates'][0]" >
+                   
+                    <div *ngFor="let dataItem of objectKeys(checkListItems[item]['dates'][0])">{{dataItem}}
+                        <input type="date" [(ngModel)]="checkListSummaryDetails[checkListItems[item]['dates'][0][dataItem]]"/>
+                    </div>
+                </ng-container>
+                </td>
+                <td>
+                   
+                    <ng-container *ngIf="checkListItems[item]['data'][0]" >
+                    <div *ngFor="let dataItem of objectKeys(checkListItems[item]['data'][0])">{{dataItem}}<br/><br/></div>
+                </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="checkListItems[item]['data'][0]" >
+                        <div *ngFor="let dataItem of objectKeys(checkListItems[item]['data'][0])">
+                            <ng-container *ngFor="let ipt of checkListItems[item]['data'][0][dataItem][0]; let ind = index">
+                            <input *ngIf="objectValues(checkListItems[item]['data'][0][dataItem][0][ind])[0] != 'DT' " type="checkbox" [(ngModel)]="checkListSummaryDetails[objectKeys(checkListItems[item]['data'][0][dataItem][0][ind])[0]]"
+                            [ngModelOptions]="{standalone: true}"/>
+                            <input *ngIf="objectValues(checkListItems[item]['data'][0][dataItem][0][ind])[0] != 'CL' " type="date" [(ngModel)]="checkListSummaryDetails[objectKeys(checkListItems[item]['data'][0][dataItem][0][ind])[0]]"/>
+                        </ng-container>
+                        <br/><br/>
+
+                        </div>
+                    </ng-container>
+                </td>
+                <td class="torc"><ng-container *ngIf="checkListItems[item]['data'][0]" >
+                    <div *ngFor="let dataItem of objectKeys(checkListItems[item]['data'][0])">
+                        {{checkListItems[item]['data'][0][dataItem][1]}} <br/>
+                        <br/>
+                    </div>
+                   
+                </ng-container>
+            </td>
+                <td>
+                    <textarea class="commentsStyling" [(ngModel)]="checkListSummaryDetails[checkListItems[item]['comments'][0]]"></textarea>
+                   
+                </td> 
+            </tr>
+            <tr *ngIf="checkListItems[item]['noOfRows'] != 1">
+                <td>
+                    <ng-container *ngIf="checkListItems[item]['dates'][1]" >
+                       
+                        <div *ngFor="let dataItem of objectKeys(checkListItems[item]['dates'][1])">{{dataItem}}
+                            <input type="date" [(ngModel)]="checkListSummaryDetails[checkListItems[item]['dates'][1][dataItem]]"/>
+                        </div>
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="checkListItems[item]['data'][1]" >
+                        <div *ngFor="let dataItem of objectKeys(checkListItems[item]['data'][1])">{{dataItem}}<br/><br/></div>
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="checkListItems[item]['data'][1]" >
+                        <div *ngFor="let dataItem of objectKeys(checkListItems[item]['data'][1])">
+                            <ng-container *ngFor="let ipt of checkListItems[item]['data'][1][dataItem][0]; let ind = index">
+                            <input *ngIf="objectValues(checkListItems[item]['data'][1][dataItem][0][ind])[0] != 'DT' " type="checkbox" [(ngModel)]="checkListSummaryDetails[objectKeys(checkListItems[item]['data'][1][dataItem][0][ind])[0]]"
+                            [ngModelOptions]="{standalone: true}"/>
+                            <input *ngIf="objectValues(checkListItems[item]['data'][1][dataItem][0][ind])[0] != 'CL' " type="date" [(ngModel)]="checkListSummaryDetails[objectKeys(checkListItems[item]['data'][1][dataItem][0][ind])[0]]"/>
+                        </ng-container>
+                        <br/><br/>
+
+                        </div>
+                    </ng-container>
+
+
+                </td>
+                <td class="torc">
+                    <ng-container *ngIf="checkListItems[item]['data'][1]" >
+                        <div *ngFor="let dataItem of objectKeys(checkListItems[item]['data'][1])">
+                            {{checkListItems[item]['data'][1][dataItem][1]}}  <br/>
+                            <br/>
+                        </div>
+                        
+                    </ng-container>
+                </td>
+                <td><textarea class="commentsStyling" [(ngModel)]="checkListSummaryDetails[checkListItems[item]['comments'][1]]"></textarea></td> 
+            </tr>
+
+        </ng-container>
+
+       
+        <button (click)="saveDetails()">Save</button>
+        <div *ngIf="showError" class="errorMessage">Enter Study ID and TMF Support Name in order to save it</div>
+    </tbody>
+</table>
